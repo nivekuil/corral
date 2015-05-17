@@ -3,6 +3,7 @@ Corral makes it easy and intuitive to wrap parentheses, brackets, quotes, and ot
 
 ** Example
 [[./corral-example-c.gif]]
+[[./corral-example-el.gif]]
 
 ** Usage
 Call a command once to wrap the delimiters around the sexp at point.  Repeated calls of the same command, backward or forward, will shift the delimiters in the respective direction, corralling more text.

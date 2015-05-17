@@ -1,0 +1,15 @@
+* Corral
+Corral makes it easy and intuitive to wrap parentheses, brackets, quotes, and other delimiters around text.  Call a command once to wrap the delimiters around the sexp at point.  Repeated calls of the same command, backward or forward, will shift the delimiters in the respective direction, corralling more text.
+
+** Example
+[[./corral-example-c.gif]]
+
+** Usage
+To use corral, just bind the various commands to keys of your choosing.  Here are some example keybindings:
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-9") 'corral-parentheses-backward)
+(global-set-key (kbd "M-0") 'corral-parentheses-forward)
+(global-set-key (kbd "M-[") 'corral-brackets-backward)
+(global-set-key (kbd "M-]") 'corral-brackets-forward)
+(global-set-key (kbd "M-\"") 'corral-double-quotes-backward)
+#+END_SRC

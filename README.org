@@ -1,7 +1,7 @@
 * Corral
 Corral makes it easy and intuitive to wrap parentheses, brackets, quotes, and other delimiters around text.
 
-** Example
+** Examples
 [[./corral-example-c.gif]]
 [[./corral-example-el.gif]]
 

@@ -1,7 +1,7 @@
 ;;; corral.el --- Incrementally wrap delimiters around s-expressions
 
 ;; Copyright (C) 2015 Kevin Liu
-;; Author: Kevin Liu <nivekuil@eng.ucsd.edu>
+;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
 ;; Version: 0.0.1

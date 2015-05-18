@@ -1,3 +1,4 @@
+[[http://melpa.org/#/corral][file:http://melpa.org/packages/corral-badge.svg]]
 * Corral
 Corral makes it fast and intuitive to wrap parentheses, brackets, quotes, and other delimiters around text.
 

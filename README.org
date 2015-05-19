@@ -24,3 +24,9 @@ To use these commands, just bind them to keys of your choosing.  Here are some e
 (global-set-key (kbd "M-]") 'corral-brackets-forward)
 (global-set-key (kbd "M-\"") 'corral-double-quotes-backward)
 #+END_SRC
+** Settings
+*** Get the point to stay where it is instead of following the delimiters
+This is controlled by the variable =corral-preserve-point=, which can be set manually or through customize.
+#+BEGIN_SRC emacs-lisp
+(setq corral-preserve-point t)
+#+END_SRC

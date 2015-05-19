@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.1.1
+;; Version: 0.1.2
 
 ;; This file is not part of GNU Emacs.
 
@@ -132,6 +132,34 @@
         (progn (goto-char corral--virtual-point)
                (corral-shift-backward ?[ ?]))
       (corral-wrap-backward ?[ ?]))
+    (setq corral--virtual-point (point)))
+  (unless corral-preserve-point
+    (goto-char corral--virtual-point)))
+
+;;;###autoload
+(defun corral-braces-forward ()
+  "Wrap brackets around sexp, moving point to the closing bracket."
+  (interactive)
+  (save-excursion
+    (if (or (eq last-command 'corral-braces-forward)
+            (eq last-command 'corral-braces-backward))
+        (progn (goto-char corral--virtual-point)
+               (corral-shift-forward ?{ ?}))
+      (corral-wrap-forward ?{ ?}))
+    (setq corral--virtual-point (point)))
+  (unless corral-preserve-point
+    (goto-char corral--virtual-point)))
+
+;;;###autoload
+(defun corral-braces-backward ()
+  "Wrap brackets around sexp, moving point to the closing bracket."
+  (interactive)
+  (save-excursion
+    (if (or (eq last-command 'corral-braces-forward)
+            (eq last-command 'corral-braces-backward))
+        (progn (goto-char corral--virtual-point)
+               (corral-shift-backward ?{ ?}))
+      (corral-wrap-backward ?{ ?}))
     (setq corral--virtual-point (point)))
   (unless corral-preserve-point
     (goto-char corral--virtual-point)))

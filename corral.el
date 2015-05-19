@@ -49,7 +49,8 @@
     (beginning-of-sexp))
   (insert open)
   (save-excursion
-    (forward-sexp) (insert close)))
+    (forward-sexp) (insert close))
+  (backward-char))
 
 (defun corral-wrap-forward (open close)
   "Wrap OPEN and CLOSE around sexp, leaving point at CLOSE."

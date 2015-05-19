@@ -1,6 +1,10 @@
 [[http://melpa.org/#/corral][file:http://melpa.org/packages/corral-badge.svg]]
 * Corral
-Corral makes it fast and intuitive to wrap parentheses, brackets, quotes, and other delimiters around text.
+** What it is
+A lightweight set of commands that enable you to quickly wrap parentheses, brackets, quotes, and other delimiters around text.
+
+** What it isn't
+A replacement to a fully-featured structural editing mode for lisp, like the built-in paredit.
 
 ** Examples
 [[./corral-example-c.gif]] \\

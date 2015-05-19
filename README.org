@@ -4,14 +4,18 @@
 A lightweight set of commands that enable you to quickly wrap parentheses, brackets, quotes, and other delimiters around text.
 
 ** What it isn't
-A replacement to a fully-featured structural editing mode for lisp, like the built-in paredit.
+A replacement to a fully-featured structural editing mode for lisp, such as paredit.
 
 ** Examples
 [[./corral-example-c.gif]] \\
 [[./corral-example-el.gif]]
 
 ** Installation
-Corral can be found on melpa, and should be installed from there.
+Corral can be found on melpa, and should be installed from there.  To install it manually, save corral.el to your computer and add this to your init file:
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "/path/to/corral/directory/")
+(require 'corral)
+#+END_SRC
 
 ** Usage
 Call a command once to wrap the delimiters around the sexp at point.  Repeated calls of the same command, backward or forward, will shift the delimiters in the respective direction, corralling more text.

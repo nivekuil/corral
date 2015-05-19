@@ -91,7 +91,7 @@
                (corral-shift-forward ?( ?)))
       (corral-wrap-forward ?( ?)))
     (setq corral--virtual-point (point)))
-  (when (not corral-preserve-point)
+  (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
 ;;;###autoload
@@ -105,7 +105,7 @@
                (corral-shift-backward ?( ?)))
       (corral-wrap-backward ?( ?)))
     (setq corral--virtual-point (point)))
-  (when (not corral-preserve-point)
+  (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
 ;;;###autoload
@@ -119,7 +119,7 @@
                (corral-shift-forward ?[ ?]))
       (corral-wrap-forward ?[ ?]))
     (setq corral--virtual-point (point)))
-  (when (not corral-preserve-point)
+  (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
 ;;;###autoload
@@ -133,7 +133,7 @@
                (corral-shift-backward ?[ ?]))
       (corral-wrap-backward ?[ ?]))
     (setq corral--virtual-point (point)))
-  (when (not corral-preserve-point)
+  (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
 ;;;###autoload
@@ -147,7 +147,7 @@
                (corral-shift-forward ?\" ?\"))
       (corral-wrap-forward ?\" ?\"))
     (setq corral--virtual-point (point)))
-  (when (not corral-preserve-point)
+  (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
 ;;;###autoload
@@ -161,7 +161,7 @@
                (corral-shift-backward ?\" ?\"))
       (corral-wrap-backward ?\" ?\"))
     (setq corral--virtual-point (point)))
-  (when (not corral-preserve-point)
+  (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
 (provide 'corral)

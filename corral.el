@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.1.0
+;; Version: 0.1.1
 
 ;; This file is not part of GNU Emacs.
 
@@ -49,8 +49,7 @@
     (beginning-of-sexp))
   (insert open)
   (save-excursion
-    (forward-sexp) (insert close))
-  (backward-char))
+    (forward-sexp) (insert close)))
 
 (defun corral-wrap-forward (open close)
   "Wrap OPEN and CLOSE around sexp, leaving point at CLOSE."

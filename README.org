@@ -4,7 +4,7 @@
 A lightweight set of commands that enable you to quickly wrap parentheses, brackets, quotes, and other delimiters around text.
 
 ** What it isn't
-A replacement to a fully-featured structural editing mode for lisp, such as paredit.  Corral provides speed and simplicity, and is not limited to lisp.
+A replacement to a fully-featured structural editing mode for lisp, such as paredit.  Corral prioritizes speed and simplicity, and should work for any language.
 
 ** Examples
 [[./corral-example-c.gif]] \\

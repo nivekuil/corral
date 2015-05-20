@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.1.4
+;; Version: 0.1.5
 
 ;; This file is not part of GNU Emacs.
 
@@ -53,9 +53,9 @@
 
 (defun corral-wrap-forward (open close)
   "Wrap OPEN and CLOSE around sexp, leaving point at CLOSE."
-  (when (and (string-match-p "\\s-" (char-to-string (char-before)))
+  (when (and (string-match-p "\\w" (char-to-string (char-before)))
              (string-match-p "\\W" (char-to-string (char-after))))
-    (backward-char))
+    (forward-char))
   (forward-sexp)
   (save-excursion
     (backward-sexp) (insert open))

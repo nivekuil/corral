@@ -42,7 +42,7 @@
 
 (defun corral-wrap-backward (open close)
   "Wrap OPEN and CLOSE delimiters around sexp, leaving point at OPEN."
-  (when (and (string-match-p "\\s-" (char-to-string (char-after)))
+  (when (and (string-match-p "\\w" (char-to-string (char-after)))
              (string-match-p "\\W" (char-to-string (char-before))))
     (forward-char))
   (backward-sexp)

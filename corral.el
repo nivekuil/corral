@@ -46,9 +46,9 @@
              (string-match-p "\\W" (char-to-string (char-before))))
     (forward-char))
   (backward-sexp)
-  (insert open)
   (save-excursion
     (forward-sexp) (insert close))
+  (insert open)
   (backward-char))
 
 (defun corral-wrap-forward (open close)

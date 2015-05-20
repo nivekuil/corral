@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.1.2
+;; Version: 0.1.3
 
 ;; This file is not part of GNU Emacs.
 
@@ -44,9 +44,14 @@
 
 (defun corral-wrap-backward (open close)
   "Wrap OPEN and CLOSE delimiters around sexp, leaving point at OPEN."
-  ;; If char before point is whitespace, move to end of sexp first
-  (when (string-match-p "\\S-" (char-to-string (char-before)))
-    (beginning-of-sexp))
+  (cond
+   ((and (string-match-p "\\W" (char-to-string (char-after)))
+         (string-match-p "\\w" (char-to-string (char-before))))
+    (backward-char))
+   ((and (string-match-p "\\w" (char-to-string (char-after)))
+         (string-match-p "\\W" (char-to-string (char-before))))
+    (forward-char)))
+  (beginning-of-sexp)
   (insert open)
   (save-excursion
     (forward-sexp) (insert close))
@@ -54,11 +59,16 @@
 
 (defun corral-wrap-forward (open close)
   "Wrap OPEN and CLOSE around sexp, leaving point at CLOSE."
-  ;; If char before point is a word, move to beginning of sexp first
-  (when (string-match-p "\\S-" (char-to-string (char-before)))
-    (beginning-of-sexp))
-  (insert open)
+  (cond
+   ((and (string-match-p "\\w" (char-to-string (char-after)))
+         (string-match-p "\\W" (char-to-string (char-before))))
+    (forward-char))
+   ((and (string-match-p "\\W" (char-to-string (char-after)))
+         (string-match-p "\\w" (char-to-string (char-before))))
+    (backward-char)))
   (forward-sexp)
+  (save-excursion
+    (beginning-of-sexp) (insert open))
   (insert close))
 
 (defun corral-shift-backward (open close)

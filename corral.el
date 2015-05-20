@@ -67,8 +67,7 @@
    ((eq (char-before) open)
     (backward-char) (corral-shift-backward open close))
    ((eq (char-after) open)
-    (save-excursion                     ; Handle scan error
-      (backward-sexp) (forward-sexp))
+    (save-excursion (backward-sexp))    ; Handle scan error
     (delete-char 1) (backward-sexp) (insert open) (backward-char))
    (t (backward-sexp) (corral-shift-backward open close))))
 
@@ -78,8 +77,7 @@
    ((eq (char-after) close)
     (forward-char) (corral-shift-forward open close))
    ((eq (char-before) close)
-    (save-excursion                     ; Handle scan error
-      (forward-sexp) (backward-sexp))
+    (save-excursion (forward-sexp))     ; Handle scan error
     (delete-char -1) (forward-sexp) (insert close))
    (t (forward-sexp) (corral-shift-forward open close))))
 

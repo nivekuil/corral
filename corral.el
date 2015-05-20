@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.1.5
+;; Version: 0.1.6
 
 ;; This file is not part of GNU Emacs.
 
@@ -67,6 +67,8 @@
    ((eq (char-before) open)
     (backward-char) (corral-shift-backward open close))
    ((eq (char-after) open)
+    (save-excursion                     ; Handle scan error
+      (backward-sexp) (forward-sexp))
     (delete-char 1) (backward-sexp) (insert open) (backward-char))
    (t (backward-sexp) (corral-shift-backward open close))))
 
@@ -76,6 +78,8 @@
    ((eq (char-after) close)
     (forward-char) (corral-shift-forward open close))
    ((eq (char-before) close)
+    (save-excursion                     ; Handle scan error
+      (forward-sexp) (backward-sexp))
     (delete-char -1) (forward-sexp) (insert close))
    (t (forward-sexp) (corral-shift-forward open close))))
 

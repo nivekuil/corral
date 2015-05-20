@@ -20,6 +20,13 @@ Corral can be found on melpa, and should be installed from there.  To install it
 ** Usage
 Call a command once to wrap the delimiters around the sexp at point.  Repeated calls of the same command, backward or forward, will shift the delimiters in the respective direction, corralling more text.
 
+The wrapping algorithm tries to operate on these principles:
+- If the point is over a word, it will always wrap around that word.
+- Otherwise, =backward= and =forward= commands should have different effects.
+- Symbols will not be directly corraled.
+
+If there are any discrepancies, feel free to report it on the issue tracker.
+
 To use these commands, just bind them to keys of your choosing.  Here are some example keybindings:
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-9") 'corral-parentheses-backward)

@@ -31,6 +31,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defcustom corral-preserve-point nil
   "Preserve the position of the point instead of following a delimiter."
   :type 'boolean

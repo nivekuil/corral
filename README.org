@@ -44,7 +44,7 @@ This is controlled by the variable =corral-preserve-point=, which can be set man
 (setq corral-preserve-point t)
 #+END_SRC
 *** Configure how corral handles punctuation/symbols
-Corral can be configured to use special syntax rules, which are set through the variable =corral-syntax-rules=. This variable is a list of syntax rules, which follow the same syntax as =modify-syntax-entry=.
+Corral can be configured to use special syntax rules, which are set through the variable =corral-syntax-entries=. This variable is a list of syntax entries and follows the same syntax as =modify-syntax-entry=.
 
 For example, if you want to have =#= and =*= be treated as symbols so that they are wrapped as part of the word:
 #+BEGIN_SRC emacs-lisp

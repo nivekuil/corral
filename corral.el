@@ -40,7 +40,7 @@
   "Syntax rules to apply when coralling text.
 An example usage to have # and * be counted as symbols:
 \(setq corral-syntax-entries '((?# \"_\")
-                            (?* \"_\")))
+                               (?* \"_\")))
 
 You can also use 'add-to-list', like this:
 \(add-to-list 'corral-syntax-entries '(?# \"_\"))")

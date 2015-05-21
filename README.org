@@ -49,5 +49,5 @@ Corral can be configured to use special syntax rules, which are set through the 
 For example, if you want to have =#= and =*= be treated as symbols so that they are wrapped as part of the word:
 #+BEGIN_SRC emacs-lisp
 (setq corral-syntax-rules '((?# "_")
-                            (?* "_"))
+                            (?* "_")))
 #+END_SRC

@@ -94,10 +94,10 @@ You can also use 'add-to-list', like this:
   (save-excursion
     (let ((temp-syntax-table
            (make-syntax-table (syntax-table)))) ;Inherit current syntax table
-      ;; Loop through corral syntax rules and apply them temporarily
-      (cl-loop for rule in corral-syntax-entries collect
+      ;; Loop through corral syntax entries and apply them temporarily
+      (cl-loop for entry in corral-syntax-entries collect
                (apply (lambda (x y)
-                        (modify-syntax-entry x y temp-syntax-table)) rule))
+                        (modify-syntax-entry x y temp-syntax-table)) entry))
       (with-syntax-table temp-syntax-table
         (if (or (eq last-command forward)
                 (eq last-command backward))
@@ -113,10 +113,10 @@ You can also use 'add-to-list', like this:
   (save-excursion
     (let ((temp-syntax-table
            (make-syntax-table (syntax-table)))) ;Inherit current syntax table
-      ;; Loop through corral syntax rules and apply them temporarily
-      (cl-loop for rule in corral-syntax-entries collect
+      ;; Loop through corral syntax entries and apply them temporarily
+      (cl-loop for entry in corral-syntax-entries collect
                (apply (lambda (x y)
-                        (modify-syntax-entry x y temp-syntax-table)) rule))
+                        (modify-syntax-entry x y temp-syntax-table)) entry))
       (with-syntax-table temp-syntax-table
         (if (or (eq last-command forward)
                 (eq last-command backward))

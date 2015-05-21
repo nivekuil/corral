@@ -36,8 +36,7 @@
   :type 'boolean
   :group 'corral)
 
-(defvar corral-syntax-table
-  (make-syntax-table))
+(defvar corral-syntax-rules nil)
 
 (defvar corral--virtual-point 0
   "Virtual point position to use for shifting, when preserving the real point.")
@@ -86,28 +85,36 @@
 (defun corral-command-backward (open close backward forward)
   "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
   (save-excursion
-    (with-syntax-table corral-syntax-table
-      (if (or (eq last-command forward)
-              (eq last-command backward))
-          (progn (goto-char corral--virtual-point)
-                 (corral-shift-backward open close))
-        (corral-wrap-backward open close)))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+    (let ((temp-syntax-table
+           (make-syntax-table (syntax-table))))
+      (when corral-syntax-rules
+        (apply 'funcall corral-syntax-rules))
+      (with-syntax-table temp-syntax-table
+        (if (or (eq last-command forward)
+                (eq last-command backward))
+            (progn (goto-char corral--virtual-point)
+                   (corral-shift-backward open close))
+          (corral-wrap-backward open close)))
+      (setq corral--virtual-point (point))))
+    (unless corral-preserve-point
+      (goto-char corral--virtual-point)))
 
 (defun corral-command-forward (open close backward forward)
   "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
   (save-excursion
-    (with-syntax-table corral-syntax-table
-      (if (or (eq last-command forward)
-              (eq last-command backward))
-          (progn (goto-char corral--virtual-point)
-                 (corral-shift-forward open close))
-        (corral-wrap-forward open close)))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+    (let ((temp-syntax-table
+           (make-syntax-table (syntax-table))))
+      (when corral-syntax-rules
+        (apply 'funcall corral-syntax-rules))
+      (with-syntax-table temp-syntax-table
+        (if (or (eq last-command forward)
+                (eq last-command backward))
+            (progn (goto-char corral--virtual-point)
+                   (corral-shift-forward open close))
+          (corral-wrap-forward open close)))
+      (setq corral--virtual-point (point))))
+    (unless corral-preserve-point
+      (goto-char corral--virtual-point)))
 
 
 ;;;###autoload

@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.1.6
+;; Version: 0.1.7
 
 ;; This file is not part of GNU Emacs.
 
@@ -36,9 +36,11 @@
   :type 'boolean
   :group 'corral)
 
+(defvar corral-syntax-table
+  (make-syntax-table))
+
 (defvar corral--virtual-point 0
   "Virtual point position to use for shifting, when preserving the real point.")
-
 
 (defun corral-wrap-backward (open close)
   "Wrap OPEN and CLOSE delimiters around sexp, leaving point at OPEN."
@@ -81,118 +83,96 @@
     (delete-char -1) (forward-sexp) (insert close))
    (t (forward-sexp) (corral-shift-forward open close))))
 
-
-;;;###autoload
-(defun corral-parentheses-forward ()
-  "Wrap parentheses around sexp, moving point to the closing parentheses."
-  (interactive)
+(defun corral-command-backward (open close backward forward)
+  "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
   (save-excursion
-    (if (or (eq last-command 'corral-parentheses-forward)
-            (eq last-command 'corral-parentheses-backward))
-        (progn (goto-char corral--virtual-point)
-               (corral-shift-forward ?( ?)))
-      (corral-wrap-forward ?( ?)))
+    (with-syntax-table corral-syntax-table
+      (if (or (eq last-command forward)
+              (eq last-command backward))
+          (progn (goto-char corral--virtual-point)
+                 (corral-shift-backward open close))
+        (corral-wrap-backward open close)))
     (setq corral--virtual-point (point)))
   (unless corral-preserve-point
     (goto-char corral--virtual-point)))
+
+(defun corral-command-forward (open close backward forward)
+  "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
+  (save-excursion
+    (with-syntax-table corral-syntax-table
+      (if (or (eq last-command forward)
+              (eq last-command backward))
+          (progn (goto-char corral--virtual-point)
+                 (corral-shift-forward open close))
+        (corral-wrap-forward open close)))
+    (setq corral--virtual-point (point)))
+  (unless corral-preserve-point
+    (goto-char corral--virtual-point)))
+
 
 ;;;###autoload
 (defun corral-parentheses-backward ()
   "Wrap parentheses around sexp, moving point to the closing parentheses."
   (interactive)
-  (save-excursion
-    (if (or (eq last-command 'corral-parentheses-forward)
-            (eq last-command 'corral-parentheses-backward))
-        (progn (goto-char corral--virtual-point)
-               (corral-shift-backward ?( ?)))
-      (corral-wrap-backward ?( ?)))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+  (corral-command-backward ?( ?)
+                          'corral-parentheses-backward
+                          'corral-parentheses-forward))
 
 ;;;###autoload
-(defun corral-brackets-forward ()
-  "Wrap brackets around sexp, moving point to the closing bracket."
+(defun corral-parentheses-forward ()
+  "Wrap parentheses around sexp, moving point to the closing parentheses."
   (interactive)
-  (save-excursion
-    (if (or (eq last-command 'corral-brackets-forward)
-            (eq last-command 'corral-brackets-backward))
-        (progn (goto-char corral--virtual-point)
-               (corral-shift-forward ?[ ?]))
-      (corral-wrap-forward ?[ ?]))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+  (corral-command-forward ?( ?)
+                          'corral-parentheses-backward
+                          'corral-parentheses-forward))
 
 ;;;###autoload
 (defun corral-brackets-backward ()
   "Wrap brackets around sexp, moving point to the opening bracket."
   (interactive)
-  (save-excursion
-    (if (or (eq last-command 'corral-brackets-forward)
-            (eq last-command 'corral-brackets-backward))
-        (progn (goto-char corral--virtual-point)
-               (corral-shift-backward ?[ ?]))
-      (corral-wrap-backward ?[ ?]))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+  (corral-command-backward ?( ?)
+                          'corral-brackets-backward
+                          'corral-brackets-forward))
 
 ;;;###autoload
-(defun corral-braces-forward ()
+(defun corral-brackets-forward ()
   "Wrap brackets around sexp, moving point to the closing bracket."
   (interactive)
-  (save-excursion
-    (if (or (eq last-command 'corral-braces-forward)
-            (eq last-command 'corral-braces-backward))
-        (progn (goto-char corral--virtual-point)
-               (corral-shift-forward ?{ ?}))
-      (corral-wrap-forward ?{ ?}))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+  (corral-command-forward ?( ?)
+                          'corral-brackets-backward
+                          'corral-brackets-forward))
 
 ;;;###autoload
 (defun corral-braces-backward ()
   "Wrap brackets around sexp, moving point to the closing bracket."
   (interactive)
-  (save-excursion
-    (if (or (eq last-command 'corral-braces-forward)
-            (eq last-command 'corral-braces-backward))
-        (progn (goto-char corral--virtual-point)
-               (corral-shift-backward ?{ ?}))
-      (corral-wrap-backward ?{ ?}))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+  (corral-command-backward ?( ?)
+                           'corral-brackets-backward
+                           'corral-brackets-forward))
+
+;;;###autoload
+(defun corral-braces-forward ()
+  "Wrap brackets around sexp, moving point to the closing bracket."
+  (interactive)
+  (corral-command-backward ?{ ?}
+                           'corral-braces-backward
+                           'corral-braces-forward))
 
 ;;;###autoload
 (defun corral-double-quotes-forward ()
   "Wrap double quotes around sexp, moving point to the closing double quote."
   (interactive)
-  (save-excursion
-    (if (or (eq last-command 'corral-double-quotes-forward)
-            (eq last-command 'corral-double-quotes-backward))
-        (progn (goto-char corral--virtual-point)
-               (corral-shift-forward ?\" ?\"))
-      (corral-wrap-forward ?\" ?\"))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+  (corral-command-forward ?\" ?\"
+                           'corral-double-quotes-backward
+                           'corral-double-quotes-forward))
 
 ;;;###autoload
 (defun corral-double-quotes-backward ()
   "Wrap double quotes around sexp, moving point to the opening double quote."
   (interactive)
-  (save-excursion
-    (if (or (eq last-command 'corral-double-quotes-forward)
-            (eq last-command 'corral-double-quotes-backward))
-        (progn (goto-char corral--virtual-point)
-               (corral-shift-backward ?\" ?\"))
-      (corral-wrap-backward ?\" ?\"))
-    (setq corral--virtual-point (point)))
-  (unless corral-preserve-point
-    (goto-char corral--virtual-point)))
+  (corral-command-backward ?\" ?\"
+                           'corral-double-quotes-backward
+                           'corral-double-quotes-forward))
 
 (provide 'corral)
 

@@ -36,14 +36,14 @@
   :type 'boolean
   :group 'corral)
 
-(defvar corral-syntax-rules nil
+(defvar corral-syntax-entries nil
   "Syntax rules to apply when coralling text.
 An example usage to have # and * be counted as symbols:
-\(setq corral-syntax-rules '((?# \"_\")
+\(setq corral-syntax-entries '((?# \"_\")
                             (?* \"_\")))
 
 You can also use 'add-to-list', like this:
-\(add-to-list 'corral-syntax-rules '(?# \"_\"))")
+\(add-to-list 'corral-syntax-entries '(?# \"_\"))")
 
 (defvar corral--virtual-point 0
   "Virtual point position to use for shifting, when preserving the real point.")
@@ -95,7 +95,7 @@ You can also use 'add-to-list', like this:
     (let ((temp-syntax-table
            (make-syntax-table (syntax-table)))) ;Inherit current syntax table
       ;; Loop through corral syntax rules and apply them temporarily
-      (cl-loop for rule in corral-syntax-rules collect
+      (cl-loop for rule in corral-syntax-entries collect
                (apply (lambda (x y)
                         (modify-syntax-entry x y temp-syntax-table)) rule))
       (with-syntax-table temp-syntax-table
@@ -114,7 +114,7 @@ You can also use 'add-to-list', like this:
     (let ((temp-syntax-table
            (make-syntax-table (syntax-table)))) ;Inherit current syntax table
       ;; Loop through corral syntax rules and apply them temporarily
-      (cl-loop for rule in corral-syntax-rules collect
+      (cl-loop for rule in corral-syntax-entries collect
                (apply (lambda (x y)
                         (modify-syntax-entry x y temp-syntax-table)) rule))
       (with-syntax-table temp-syntax-table

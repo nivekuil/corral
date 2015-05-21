@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.1.7
+;; Version: 0.1.8
 
 ;; This file is not part of GNU Emacs.
 
@@ -36,7 +36,14 @@
   :type 'boolean
   :group 'corral)
 
-(defvar corral-syntax-rules nil)
+(defvar corral-syntax-rules nil
+  "Syntax rules to apply when coralling text.
+An example usage to have # and * be counted as symbols:
+\(setq corral-syntax-rules '((?# \"_\")
+                            (?* \"_\")))
+
+You can also use 'add-to-list', like this:
+\(add-to-list 'corral-syntax-rules '(?# \"_\"))")
 
 (defvar corral--virtual-point 0
   "Virtual point position to use for shifting, when preserving the real point.")
@@ -86,9 +93,11 @@
   "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
   (save-excursion
     (let ((temp-syntax-table
-           (make-syntax-table (syntax-table))))
-      (when corral-syntax-rules
-        (apply 'funcall corral-syntax-rules))
+           (make-syntax-table (syntax-table)))) ;Inherit current syntax table
+      ;; Loop through corral syntax rules and apply them temporarily
+      (cl-loop for rule in corral-syntax-rules collect
+               (apply (lambda (x y)
+                        (modify-syntax-entry x y temp-syntax-table)) rule))
       (with-syntax-table temp-syntax-table
         (if (or (eq last-command forward)
                 (eq last-command backward))
@@ -103,9 +112,11 @@
   "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
   (save-excursion
     (let ((temp-syntax-table
-           (make-syntax-table (syntax-table))))
-      (when corral-syntax-rules
-        (apply 'funcall corral-syntax-rules))
+           (make-syntax-table (syntax-table)))) ;Inherit current syntax table
+      ;; Loop through corral syntax rules and apply them temporarily
+      (cl-loop for rule in corral-syntax-rules collect
+               (apply (lambda (x y)
+                        (modify-syntax-entry x y temp-syntax-table)) rule))
       (with-syntax-table temp-syntax-table
         (if (or (eq last-command forward)
                 (eq last-command backward))

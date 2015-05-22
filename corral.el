@@ -150,7 +150,7 @@ You can also use 'add-to-list', like this:
 (defun corral-brackets-backward ()
   "Wrap brackets around sexp, moving point to the opening bracket."
   (interactive)
-  (corral-command-backward ?( ?)
+  (corral-command-backward ?[ ?]
                           'corral-brackets-backward
                           'corral-brackets-forward))
 
@@ -158,7 +158,7 @@ You can also use 'add-to-list', like this:
 (defun corral-brackets-forward ()
   "Wrap brackets around sexp, moving point to the closing bracket."
   (interactive)
-  (corral-command-forward ?( ?)
+  (corral-command-forward ?[ ?]
                           'corral-brackets-backward
                           'corral-brackets-forward))
 

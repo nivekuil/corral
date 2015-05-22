@@ -168,7 +168,7 @@ You can also use 'add-to-list', like this:
 (defun corral-braces-backward ()
   "Wrap brackets around sexp, moving point to the closing bracket."
   (interactive)
-  (corral-command-backward ?( ?)
+  (corral-command-backward ?{ ?}
                            'corral-brackets-backward
                            'corral-brackets-forward))
 

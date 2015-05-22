@@ -40,15 +40,17 @@
 
 (defvar corral-syntax-entries nil
   "Syntax rules to apply when coralling text.
-An example usage to have # and * be counted as symbols:
+
+An example usage to have # and * be counted as symbols so that they are wrapped
+as words:
 \(setq corral-syntax-entries '((?# \"_\")
-                               (?* \"_\")))
+                              (?* \"_\")))
 
 You can also use 'add-to-list', like this:
 \(add-to-list 'corral-syntax-entries '(?# \"_\"))")
 
 (defvar corral--virtual-point 0
-  "Virtual point position to use for shifting, when preserving the real point.")
+  "Virtual point position to use for shifting when preserving the real point.")
 
 (defun corral-wrap-backward (open close)
   "Wrap OPEN and CLOSE delimiters around sexp, leaving point at OPEN."

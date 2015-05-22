@@ -169,14 +169,14 @@ You can also use 'add-to-list', like this:
   "Wrap brackets around sexp, moving point to the closing bracket."
   (interactive)
   (corral-command-backward ?{ ?}
-                           'corral-brackets-backward
-                           'corral-brackets-forward))
+                           'corral-braces-backward
+                           'corral-braces-forward))
 
 ;;;###autoload
 (defun corral-braces-forward ()
   "Wrap brackets around sexp, moving point to the closing bracket."
   (interactive)
-  (corral-command-backward ?{ ?}
+  (corral-command-forward ?{ ?}
                            'corral-braces-backward
                            'corral-braces-forward))
 

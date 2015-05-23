@@ -1,10 +1,8 @@
 [[http://melpa.org/#/corral][file:http://melpa.org/packages/corral-badge.svg]]
 * Corral
-** What it is
-A lightweight set of commands that enable you to quickly wrap parentheses, brackets, quotes, and other delimiters around text.
+Corral is a lightweight set of commands that enable you to quickly wrap parentheses, brackets, quotes, and other delimiters around text.
 
-** What it isn't
-A replacement to a fully-featured structural editing mode for lisp, such as paredit.  Corral prioritizes speed and simplicity, and should work for any language.
+It is not meant to be a replacement to lisp structural editing modes such as paredit.  Corral emphasizes speed and simplicity, and should work for any language.
 
 ** Examples
 [[./corral-example-c.gif]] \\
@@ -18,14 +16,7 @@ Corral can be found on melpa, and should be installed from there.  To install it
 #+END_SRC
 
 ** Usage
-Call a command once to wrap the delimiters around the sexp at point.  Repeated calls of the same command, backward or forward, will shift the delimiters in the respective direction, corralling more text.
-
-The wrapping algorithm tries to operate on these principles:
-- If the point is over a word, it will always wrap around that word.
-- Otherwise, =backward= and =forward= commands should have different effects.
-- Symbols will not be directly corraled.
-
-If there are any discrepancies, feel free to report it on the issue tracker.
+Call a command once to wrap delimiters around the sexp at point.  Repeated calls of the same command, backward or forward, will shift the delimiters in the respective direction, corralling more text.
 
 To use these commands, just bind them to keys of your choosing.  Here are some example keybindings:
 #+BEGIN_SRC emacs-lisp
@@ -37,6 +28,13 @@ To use these commands, just bind them to keys of your choosing.  Here are some e
 (global-set-key (kbd "M-}") 'corral-braces-forward)
 (global-set-key (kbd "M-\"") 'corral-double-quotes-backward)
 #+END_SRC
+
+The wrapping algorithm tries to follow these rules:
+- If the point is over a word, it will always wrap around that word.
+- Otherwise, =backward= and =forward= commands should have different effects.
+
+You can tweak how the wrapping works by modifying the syntax table through =corral-syntax-entries= (see [[https://github.com/nivekuil/corral#configure-how-corral-handles-punctuationsymbols][Settings]]).
+
 ** Settings
 *** Keep point position instead of following delimiters
 This is controlled by the variable =corral-preserve-point=, which can be set manually or through customize.

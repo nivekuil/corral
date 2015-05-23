@@ -4,9 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.1.8
-
-;; This file is not part of GNU Emacs.
+;; Version: 0.2
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,11 +21,11 @@
 
 ;;; Commentary:
 
-;; This package contains functions that incrementally wrap (or "corral")
-;; s-expressions with delimiters, such as parentheses and brackets.
-;; After calling one of the interactive commands, repeated calls will shift
-;; the corral instead of inserting new delimiters, expanding the amount of
-;; text contained within the delimiters.
+;; This package adds commands that allow the user to quickly and intuitively
+;; wrap a desired amount of text within delimiters, including parentheses and
+;; quotes.  After calling one of the interactive commands, repeated calls will
+;; shift the corral instead of inserting new delimiters, expanding the amount
+;; of text contained within the delimiters.
 
 ;;; Code:
 
@@ -109,8 +107,8 @@ You can also use 'add-to-list', like this:
                    (corral-shift-backward open close))
           (corral-wrap-backward open close)))
       (setq corral--virtual-point (point))))
-    (unless corral-preserve-point
-      (goto-char corral--virtual-point)))
+  (unless corral-preserve-point
+    (goto-char corral--virtual-point)))
 
 (defun corral-command-forward (open close backward forward)
   "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
@@ -128,8 +126,8 @@ You can also use 'add-to-list', like this:
                    (corral-shift-forward open close))
           (corral-wrap-forward open close)))
       (setq corral--virtual-point (point))))
-    (unless corral-preserve-point
-      (goto-char corral--virtual-point)))
+  (unless corral-preserve-point
+    (goto-char corral--virtual-point)))
 
 
 ;;;###autoload
@@ -137,8 +135,8 @@ You can also use 'add-to-list', like this:
   "Wrap parentheses around sexp, moving point to the closing parentheses."
   (interactive)
   (corral-command-backward ?( ?)
-                          'corral-parentheses-backward
-                          'corral-parentheses-forward))
+                           'corral-parentheses-backward
+                           'corral-parentheses-forward))
 
 ;;;###autoload
 (defun corral-parentheses-forward ()
@@ -153,8 +151,8 @@ You can also use 'add-to-list', like this:
   "Wrap brackets around sexp, moving point to the opening bracket."
   (interactive)
   (corral-command-backward ?[ ?]
-                          'corral-brackets-backward
-                          'corral-brackets-forward))
+                           'corral-brackets-backward
+                           'corral-brackets-forward))
 
 ;;;###autoload
 (defun corral-brackets-forward ()
@@ -177,16 +175,8 @@ You can also use 'add-to-list', like this:
   "Wrap brackets around sexp, moving point to the closing bracket."
   (interactive)
   (corral-command-forward ?{ ?}
-                           'corral-braces-backward
-                           'corral-braces-forward))
-
-;;;###autoload
-(defun corral-double-quotes-forward ()
-  "Wrap double quotes around sexp, moving point to the closing double quote."
-  (interactive)
-  (corral-command-forward ?\" ?\"
-                           'corral-double-quotes-backward
-                           'corral-double-quotes-forward))
+                          'corral-braces-backward
+                          'corral-braces-forward))
 
 ;;;###autoload
 (defun corral-double-quotes-backward ()
@@ -195,6 +185,14 @@ You can also use 'add-to-list', like this:
   (corral-command-backward ?\" ?\"
                            'corral-double-quotes-backward
                            'corral-double-quotes-forward))
+
+;;;###autoload
+(defun corral-double-quotes-forward ()
+  "Wrap double quotes around sexp, moving point to the closing double quote."
+  (interactive)
+  (corral-command-forward ?\" ?\"
+                          'corral-double-quotes-backward
+                          'corral-double-quotes-forward))
 
 (provide 'corral)
 

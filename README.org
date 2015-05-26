@@ -1,4 +1,5 @@
 [[http://melpa.org/#/corral][file:http://melpa.org/packages/corral-badge.svg]]
+[[http://stable.melpa.org/#/corral][file:http://stable.melpa.org/packages/corral-badge.svg]]
 * Corral
 Corral is a lightweight set of commands that enable you to quickly wrap parentheses, brackets, quotes, and other delimiters around text.
 

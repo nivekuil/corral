@@ -1,4 +1,4 @@
-;;; corral.el --- Incrementally wrap delimiters around s-expressions
+;;; corral.el --- Quickly surround text with delimiters
 
 ;; Copyright (C) 2015 Kevin Liu
 ;; Author: Kevin Liu <nivekuil@gmail.com>

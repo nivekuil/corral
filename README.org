@@ -1,9 +1,7 @@
 [[http://melpa.org/#/corral][file:http://melpa.org/packages/corral-badge.svg]]
 [[http://stable.melpa.org/#/corral][file:http://stable.melpa.org/packages/corral-badge.svg]]
 * Corral
-Corral is a lightweight set of commands that enable you to quickly wrap parentheses, brackets, quotes, and other delimiters around text.
-
-It is not meant to be a replacement to lisp structural editing modes such as paredit.  Corral emphasizes speed and simplicity, and should work for any language.
+Corral is a lightweight package that enables quick wrapping of parentheses and other delimiters around text, with intuitive behavior that surrounds exactly the right amount using just two commands.
 
 ** Examples
 [[./corral-example-c.gif]] \\

@@ -44,7 +44,7 @@ as words:
 \(setq corral-syntax-entries '((?# \"_\")
                               (?* \"_\")))
 
-You can also use 'add-to-list', like this:
+You can also use `add-to-list', like this:
 \(add-to-list 'corral-syntax-entries '(?# \"_\"))")
 
 (defvar corral--virtual-point 0

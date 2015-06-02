@@ -1,7 +1,7 @@
 [[http://melpa.org/#/corral][file:http://melpa.org/packages/corral-badge.svg]]
 [[http://stable.melpa.org/#/corral][file:http://stable.melpa.org/packages/corral-badge.svg]]
 * Corral
-Corral is a lightweight package that lets you quickly wrap parentheses and other delimiters around text, providing intuitive behavior that surrounds exactly what you want using just two commands.
+Corral is a lightweight package that lets you quickly wrap parentheses and other delimiters around text, intuitively surrounding what you want it to using just two commands.
 
 ** Examples
 [[./corral-example-c.gif]] \\

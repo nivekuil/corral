@@ -7,6 +7,9 @@ Corral is a lightweight package that lets you quickly wrap parentheses and other
 [[./corral-example-c.gif]] \\
 [[./corral-example-el.gif]]
 
+
+These examples are shown with the built-in =electric-pair-mode= enabled.
+
 ** Installation
 Corral can be found on melpa, and should be installed from there.  To install it manually instead, save corral.el to your computer and add this to your init file:
 #+BEGIN_SRC emacs-lisp

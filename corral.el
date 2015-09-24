@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.2.1
+;; Version: 0.2.2
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

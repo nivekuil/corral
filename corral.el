@@ -178,6 +178,22 @@ You can also use `add-to-list', like this:
                           'corral-braces-forward))
 
 ;;;###autoload
+(defun corral-single-quotes-backward ()
+    "Wrap single quotes around sexp, moving point to the opening single quote."
+    (interactive)
+    (corral-command-backward ?' ?'
+                             'corral-single-quotes-backward
+                             'corral-single-quotes-forward))
+
+;;;###autoload
+(defun corral-single-quotes-forward ()
+    "Wrap single quotes around sexp, moving point to the closing single quote."
+    (interactive)
+    (corral-command-forward ?' ?'
+                            'corral-single-quotes-backward
+                            'corral-single-quotes-forward))
+
+;;;###autoload
 (defun corral-double-quotes-backward ()
   "Wrap double quotes around sexp, moving point to the opening double quote."
   (interactive)

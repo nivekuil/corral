@@ -4,7 +4,7 @@
 ;; Author: Kevin Liu <nivekuil@gmail.com>
 ;; Created: 16 May 2015
 ;; Homepage: http://github.com/nivekuil/corral
-;; Version: 0.2.2
+;; Version: 0.2.3
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -52,7 +52,8 @@ You can also use `add-to-list', like this:
 
 (defun corral-wrap-backward (open close)
   "Wrap OPEN and CLOSE delimiters around sexp, leaving point at OPEN."
-  (when (and (string-match-p "\\w" (char-to-string (char-after)))
+  (when (and (char-after) (char-before) ; Check that trailing chars are non-nil
+             (string-match-p "\\w" (char-to-string (char-after)))
              (string-match-p "\\W" (char-to-string (char-before))))
     (forward-char))
   (backward-sexp)
@@ -63,7 +64,8 @@ You can also use `add-to-list', like this:
 
 (defun corral-wrap-forward (open close)
   "Wrap OPEN and CLOSE around sexp, leaving point at CLOSE."
-  (when (and (string-match-p "\\w" (char-to-string (char-before)))
+  (when (and (char-after) (char-before) ; Check that trailing chars are non-nil
+             (string-match-p "\\w" (char-to-string (char-before)))
              (string-match-p "\\W" (char-to-string (char-after))))
     (forward-char))
   (forward-sexp)
@@ -105,7 +107,7 @@ You can also use `add-to-list', like this:
                 (eq last-command backward))
             (progn (goto-char corral--virtual-point)
                    (corral-shift-backward open close))
-          (corral-wrap-backward open close)))
+          (corral-wrap-backwar open close)))
       (setq corral--virtual-point (point))))
   (unless corral-preserve-point
     (goto-char corral--virtual-point)))

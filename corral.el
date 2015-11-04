@@ -107,7 +107,7 @@ You can also use `add-to-list', like this:
                 (eq last-command backward))
             (progn (goto-char corral--virtual-point)
                    (corral-shift-backward open close))
-          (corral-wrap-backwar open close)))
+          (corral-wrap-backward open close)))
       (setq corral--virtual-point (point))))
   (unless corral-preserve-point
     (goto-char corral--virtual-point)))

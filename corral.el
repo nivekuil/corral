@@ -211,6 +211,21 @@ You can also use `add-to-list', like this:
                           'corral-double-quotes-backward
                           'corral-double-quotes-forward))
 
+;;;###autoload
+(defun corral-backquote-backward ()
+  "Wrap double quotes around sexp, moving point to the opening double quote."
+  (interactive)
+  (corral-command-backward ?\` ?\`
+                           'corral-backquote-backward
+                           'corral-backquote-forward))
+
+;;;###autoload
+(defun corral-backquote-forward ()
+  "Wrap double quotes around sexp, moving point to the closing double quote."
+  (interactive)
+  (corral-command-forward ?\` ?`
+                          'corral-backquote-backward
+                          'corral-backquote-forward))
 (provide 'corral)
 
 ;;; corral.el ends here

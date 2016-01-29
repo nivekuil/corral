@@ -57,7 +57,7 @@ The default behavior can be toggled by using the prefix command
 An example usage to have # and * be counted as symbols so that they are wrapped
 as words:
 \(setq corral-syntax-entries '((?# \"_\")
-                              (?* \"_\")))
+                               (?* \"_\")))
 
 You can also use `add-to-list', like this:
 \(add-to-list 'corral-syntax-entries '(?# \"_\"))")

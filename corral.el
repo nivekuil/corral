@@ -83,7 +83,7 @@ controlled by `corral-default-no-wrap' is toggled:
 * If `corral-default-no-wrap' is non-nil and WRAP-TOGGLE is non-nil, then CLOSE
   is inserted after the current balanced expression using `forward-sexp'."
   (let ((p (point)))
-    (when (and (char-after) (char-before) ; Check that trailing chars are non-nil
+    (when (and (char-after) (char-before) ;Check that trailing chars are non-nil
                (string-match-p "\\w" (char-to-string (char-after)))
                (string-match-p "\\W" (char-to-string (char-before))))
       (forward-char))
@@ -115,7 +115,7 @@ controlled by `corral-default-no-wrap' is toggled:
 * If `corral-default-no-wrap' is non-nil and WRAP-TOGGLE is non-nil, then OPEN
   is inserted after the current balanced expression using `backward-sexp'."
   (let ((p (point)))
-    (when (and (char-after) (char-before) ; Check that trailing chars are non-nil
+    (when (and (char-after) (char-before) ;Check that trailing chars are non-nil
                (string-match-p "\\w" (char-to-string (char-before)))
                (string-match-p "\\W" (char-to-string (char-after))))
       (forward-char))
@@ -148,7 +148,8 @@ controlled by `corral-default-no-wrap' is toggled:
     (delete-char -1) (forward-sexp) (insert close))
    (t (forward-sexp) (corral-shift-forward open close))))
 
-(defun corral-command-backward (open close backward forward &optional wrap-toggle)
+(defun corral-command-backward (open close backward forward
+                                     &optional wrap-toggle)
   "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD.
 
 If WRAP-TOGGLE is passed and evaluates to non-nil, the OPEN character is
@@ -170,7 +171,8 @@ inserted at point instead of wrap around the balanced expression at point."
   (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
-(defun corral-command-forward (open close backward forward &optional wrap-toggle)
+(defun corral-command-forward (open close backward forward
+                                    &optional wrap-toggle)
   "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD.
 
 If WRAP-TOGGLE is passed and evaluates to non-nil, the OPEN character is

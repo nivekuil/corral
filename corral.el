@@ -37,7 +37,7 @@
   :group 'corral)
 
 (defcustom corral-default-no-wrap nil
-  "Flag to toggle insertion of open/close character at point (without wraping).
+  "Flag to toggle insertion of open/close character at point (without wrapping).
 
 If this variable is set to t, when inserting using a -forward command, the
 opening character is inserted at point instead of wrapping the current balanced
@@ -47,7 +47,7 @@ balanced expression forward.  This affects only the first corral command, and
 not the subsequent repetitions.
 
 The default behavior can be toggled by using the prefix command
-\(\\[universal-argument]) before calling a corral--forward/backward function."
+\(\\[universal-argument]) before calling a corral-forward/backward function."
   :type 'boolean
   :group 'corral)
 

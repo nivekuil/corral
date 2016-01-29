@@ -36,6 +36,21 @@
   :type 'boolean
   :group 'corral)
 
+(defcustom corral-default-no-wrap nil
+  "Flag to toggle insertion of open/close character at point (without wraping).
+
+If this variable is set to t, when inserting using a -forward command, the
+opening character is inserted at point instead of wrapping the current balanced
+expression (e.g. word) backward.  Conversely, when using a -backward command,
+the closing character is inserted at point instead of wrapping the current
+balanced expression forward.  This affects only the first corral command, and
+not the subsequent repetitions.
+
+The default behavior can be toggled by using the prefix command
+\(\\[universal-argument]) before calling a corral--forward/backward function."
+  :type 'boolean
+  :group 'corral)
+
 (defvar corral-syntax-entries nil
   "Syntax rules to apply when coralling text.
 
@@ -50,28 +65,68 @@ You can also use `add-to-list', like this:
 (defvar corral--virtual-point 0
   "Virtual point position to use for shifting when preserving the real point.")
 
-(defun corral-wrap-backward (open close)
-  "Wrap OPEN and CLOSE delimiters around sexp, leaving point at OPEN."
-  (when (and (char-after) (char-before) ; Check that trailing chars are non-nil
-             (string-match-p "\\w" (char-to-string (char-after)))
-             (string-match-p "\\W" (char-to-string (char-before))))
-    (forward-char))
-  (backward-sexp)
-  (save-excursion
-    (forward-sexp) (insert close))
-  (insert open)
-  (backward-char))
+(defun corral-wrap-backward (open close &optional wrap-toggle)
+  "Wrap OPEN and CLOSE delimiters around sexp, leaving point at OPEN.
 
-(defun corral-wrap-forward (open close)
-  "Wrap OPEN and CLOSE around sexp, leaving point at CLOSE."
-  (when (and (char-after) (char-before) ; Check that trailing chars are non-nil
-             (string-match-p "\\w" (char-to-string (char-before)))
-             (string-match-p "\\W" (char-to-string (char-after))))
-    (forward-char))
-  (forward-sexp)
-  (save-excursion
-    (backward-sexp) (insert open))
-  (insert close))
+If WRAP-TOGGLE is passed and evaluates to non-nil, the default behavior
+controlled by `corral-default-no-wrap' is toggled:
+
+* If `corral-default-no-wrap' is nil and WRAP-TOGGLE is nil, then CLOSE is
+  inserted after the current balanced expression using `forward-sexp'.
+
+* If `corral-default-no-wrap' is nil and WRAP-TOGGLE is non-nil, then CLOSE
+  is inserted at point.
+
+* If `corral-default-no-wrap' is non-nil and WRAP-TOGGLE is nil, then CLOSE is
+  inserted at point.
+
+* If `corral-default-no-wrap' is non-nil and WRAP-TOGGLE is non-nil, then CLOSE
+  is inserted after the current balanced expression using `forward-sexp'."
+  (let ((p (point)))
+    (when (and (char-after) (char-before) ; Check that trailing chars are non-nil
+               (string-match-p "\\w" (char-to-string (char-after)))
+               (string-match-p "\\W" (char-to-string (char-before))))
+      (forward-char))
+    (backward-sexp)
+    (save-excursion
+      (if (or (and corral-default-no-wrap wrap-toggle)
+              (and (not corral-default-no-wrap) (not wrap-toggle)))
+          (forward-sexp)
+        (goto-char p))
+      (insert close))
+    (insert open)
+    (backward-char)))
+
+(defun corral-wrap-forward (open close &optional wrap-toggle)
+  "Wrap OPEN and CLOSE around sexp, leaving point at CLOSE.
+
+If WRAP-TOGGLE is passed and evaluates to non-nil, the default behavior
+controlled by `corral-default-no-wrap' is toggled:
+
+* If `corral-default-no-wrap' is nil and WRAP-TOGGLE is nil, then OPEN is
+  inserted after the current balanced expression using `backward-sexp'.
+
+* If `corral-default-no-wrap' is nil and WRAP-TOGGLE is non-nil, then OPEN
+  is inserted at point.
+
+* If `corral-default-no-wrap' is non-nil and WRAP-TOGGLE is nil, then OPEN is
+  inserted at point.
+
+* If `corral-default-no-wrap' is non-nil and WRAP-TOGGLE is non-nil, then OPEN
+  is inserted after the current balanced expression using `backward-sexp'."
+  (let ((p (point)))
+    (when (and (char-after) (char-before) ; Check that trailing chars are non-nil
+               (string-match-p "\\w" (char-to-string (char-before)))
+               (string-match-p "\\W" (char-to-string (char-after))))
+      (forward-char))
+    (forward-sexp)
+    (save-excursion
+      (if (or (and corral-default-no-wrap wrap-toggle)
+              (and (not corral-default-no-wrap) (not wrap-toggle)))
+          (backward-sexp)
+        (goto-char p))
+      (insert open))
+    (insert close)))
 
 (defun corral-shift-backward (open close)
   "Shift OPEN delimiter backward one sexp.  CLOSE is not moved."
@@ -93,8 +148,11 @@ You can also use `add-to-list', like this:
     (delete-char -1) (forward-sexp) (insert close))
    (t (forward-sexp) (corral-shift-forward open close))))
 
-(defun corral-command-backward (open close backward forward)
-  "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
+(defun corral-command-backward (open close backward forward &optional wrap-toggle)
+  "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD.
+
+If WRAP-TOGGLE is passed and evaluates to non-nil, the OPEN character is
+inserted at point instead of wrap around the balanced expression at point."
   (save-excursion
     (let ((temp-syntax-table
            (make-syntax-table (syntax-table)))) ;Inherit current syntax table
@@ -107,13 +165,16 @@ You can also use `add-to-list', like this:
                 (eq last-command backward))
             (progn (goto-char corral--virtual-point)
                    (corral-shift-backward open close))
-          (corral-wrap-backward open close)))
+          (corral-wrap-backward open close wrap-toggle)))
       (setq corral--virtual-point (point))))
   (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
-(defun corral-command-forward (open close backward forward)
-  "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD."
+(defun corral-command-forward (open close backward forward &optional wrap-toggle)
+  "Handle command with OPEN and CLOSE from commands BACKWARD and FORWARD.
+
+If WRAP-TOGGLE is passed and evaluates to non-nil, the OPEN character is
+inserted at point instead of wrap around the balanced expression at point."
   (save-excursion
     (let ((temp-syntax-table
            (make-syntax-table (syntax-table)))) ;Inherit current syntax table
@@ -126,106 +187,153 @@ You can also use `add-to-list', like this:
                 (eq last-command backward))
             (progn (goto-char corral--virtual-point)
                    (corral-shift-forward open close))
-          (corral-wrap-forward open close)))
+          (corral-wrap-forward open close wrap-toggle)))
       (setq corral--virtual-point (point))))
   (unless corral-preserve-point
     (goto-char corral--virtual-point)))
 
 ;;;###autoload
-(defun corral-parentheses-backward ()
-  "Wrap parentheses around sexp, moving point to the closing parentheses."
-  (interactive)
+(defun corral-parentheses-backward (&optional wrap-toggle)
+  "Wrap parentheses around sexp, moving point to the closing parentheses.
+
+WRAP-TOGGLE inverts the behavior of closing parenthesis insertion compared to
+the `corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-backward ?( ?)
                            'corral-parentheses-backward
-                           'corral-parentheses-forward))
+                           'corral-parentheses-forward
+                           wrap-toggle))
 
 ;;;###autoload
-(defun corral-parentheses-forward ()
-  "Wrap parentheses around sexp, moving point to the closing parentheses."
-  (interactive)
+(defun corral-parentheses-forward (&optional wrap-toggle)
+  "Wrap parentheses around sexp, moving point to the closing parentheses.
+
+WRAP-TOGGLE inverts the behavior of opening parenthesis insertion compared to
+the `corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-forward ?( ?)
                           'corral-parentheses-backward
-                          'corral-parentheses-forward))
+                          'corral-parentheses-forward
+                          wrap-toggle))
 
 ;;;###autoload
-(defun corral-brackets-backward ()
-  "Wrap brackets around sexp, moving point to the opening bracket."
-  (interactive)
+(defun corral-brackets-backward (&optional wrap-toggle)
+  "Wrap brackets around sexp, moving point to the opening bracket.
+
+WRAP-TOGGLE inverts the behavior of closing bracket insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-backward ?[ ?]
                            'corral-brackets-backward
-                           'corral-brackets-forward))
+                           'corral-brackets-forward
+                           wrap-toggle))
 
 ;;;###autoload
-(defun corral-brackets-forward ()
-  "Wrap brackets around sexp, moving point to the closing bracket."
-  (interactive)
+(defun corral-brackets-forward (&optional wrap-toggle)
+  "Wrap brackets around sexp, moving point to the closing bracket.
+
+WRAP-TOGGLE inverts the behavior of opening bracket insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-forward ?[ ?]
                           'corral-brackets-backward
-                          'corral-brackets-forward))
+                          'corral-brackets-forward
+                          wrap-toggle))
 
 ;;;###autoload
-(defun corral-braces-backward ()
-  "Wrap brackets around sexp, moving point to the closing bracket."
-  (interactive)
+(defun corral-braces-backward (&optional wrap-toggle)
+  "Wrap brackets around sexp, moving point to the opening bracket.
+
+WRAP-TOGGLE inverts the behavior of closing bracket insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-backward ?{ ?}
                            'corral-braces-backward
-                           'corral-braces-forward))
+                           'corral-braces-forward
+                           wrap-toggle))
 
 ;;;###autoload
-(defun corral-braces-forward ()
-  "Wrap brackets around sexp, moving point to the closing bracket."
-  (interactive)
+(defun corral-braces-forward (&optional wrap-toggle)
+  "Wrap brackets around sexp, moving point to the closing bracket.
+
+WRAP-TOGGLE inverts the behavior of opening bracket insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-forward ?{ ?}
                           'corral-braces-backward
-                          'corral-braces-forward))
+                          'corral-braces-forward
+                          wrap-toggle))
 
 ;;;###autoload
-(defun corral-single-quotes-backward ()
-    "Wrap single quotes around sexp, moving point to the opening single quote."
-    (interactive)
+(defun corral-single-quotes-backward (&optional wrap-toggle)
+    "Wrap single quotes around sexp, moving point to the opening single quote.
+
+WRAP-TOGGLE inverts the behavior of closing quote insertion compared to the
+`corral-default-no-wrap' variable."
+    (interactive "P")
     (corral-command-backward ?' ?'
                              'corral-single-quotes-backward
                              'corral-single-quotes-forward))
 
 ;;;###autoload
-(defun corral-single-quotes-forward ()
-    "Wrap single quotes around sexp, moving point to the closing single quote."
-    (interactive)
+(defun corral-single-quotes-forward (&optional wrap-toggle)
+    "Wrap single quotes around sexp, moving point to the closing single quote.
+
+WRAP-TOGGLE inverts the behavior of opening quote insertion compared to the
+`corral-default-no-wrap' variable."
+    (interactive "P")
     (corral-command-forward ?' ?'
                             'corral-single-quotes-backward
-                            'corral-single-quotes-forward))
+                            'corral-single-quotes-forward
+                            wrap-toggle))
 
 ;;;###autoload
-(defun corral-double-quotes-backward ()
-  "Wrap double quotes around sexp, moving point to the opening double quote."
-  (interactive)
+(defun corral-double-quotes-backward (&optional wrap-toggle)
+  "Wrap double quotes around sexp, moving point to the opening double quote.
+
+WRAP-TOGGLE inverts the behavior of closing quote insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-backward ?\" ?\"
                            'corral-double-quotes-backward
-                           'corral-double-quotes-forward))
+                           'corral-double-quotes-forward
+                           wrap-toggle))
 
 ;;;###autoload
-(defun corral-double-quotes-forward ()
-  "Wrap double quotes around sexp, moving point to the closing double quote."
-  (interactive)
+(defun corral-double-quotes-forward (&optional wrap-toggle)
+  "Wrap double quotes around sexp, moving point to the closing double quote.
+
+WRAP-TOGGLE inverts the behavior of opening quote insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-forward ?\" ?\"
                           'corral-double-quotes-backward
-                          'corral-double-quotes-forward))
+                          'corral-double-quotes-forward
+                          wrap-toggle))
 
 ;;;###autoload
-(defun corral-backquote-backward ()
-  "Wrap double quotes around sexp, moving point to the opening double quote."
-  (interactive)
+(defun corral-backquote-backward (&optional wrap-toggle)
+  "Wrap double quotes around sexp, moving point to the opening double quote.
+
+WRAP-TOGGLE inverts the behavior of closing quote insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-backward ?\` ?\`
                            'corral-backquote-backward
-                           'corral-backquote-forward))
+                           'corral-backquote-forward
+                           wrap-toggle))
 
 ;;;###autoload
-(defun corral-backquote-forward ()
-  "Wrap double quotes around sexp, moving point to the closing double quote."
-  (interactive)
+(defun corral-backquote-forward (&optional wrap-toggle)
+  "Wrap double quotes around sexp, moving point to the closing double quote.
+
+WRAP-TOGGLE inverts the behavior of opening quote insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
   (corral-command-forward ?\` ?`
                           'corral-backquote-backward
-                          'corral-backquote-forward))
+                          'corral-backquote-forward
+                          wrap-toggle))
 (provide 'corral)
 
 ;;; corral.el ends here

@@ -268,26 +268,26 @@ WRAP-TOGGLE inverts the behavior of opening bracket insertion compared to the
 
 ;;;###autoload
 (defun corral-single-quotes-backward (&optional wrap-toggle)
-    "Wrap single quotes around sexp, moving point to the opening single quote.
+  "Wrap single quotes around sexp, moving point to the opening single quote.
 
 WRAP-TOGGLE inverts the behavior of closing quote insertion compared to the
 `corral-default-no-wrap' variable."
-    (interactive "P")
-    (corral-command-backward ?' ?'
-                             'corral-single-quotes-backward
-                             'corral-single-quotes-forward))
+  (interactive "P")
+  (corral-command-backward ?' ?'
+                           'corral-single-quotes-backward
+                           'corral-single-quotes-forward))
 
 ;;;###autoload
 (defun corral-single-quotes-forward (&optional wrap-toggle)
-    "Wrap single quotes around sexp, moving point to the closing single quote.
+  "Wrap single quotes around sexp, moving point to the closing single quote.
 
 WRAP-TOGGLE inverts the behavior of opening quote insertion compared to the
 `corral-default-no-wrap' variable."
-    (interactive "P")
-    (corral-command-forward ?' ?'
-                            'corral-single-quotes-backward
-                            'corral-single-quotes-forward
-                            wrap-toggle))
+  (interactive "P")
+  (corral-command-forward ?' ?'
+                          'corral-single-quotes-backward
+                          'corral-single-quotes-forward
+                          wrap-toggle))
 
 ;;;###autoload
 (defun corral-double-quotes-backward (&optional wrap-toggle)

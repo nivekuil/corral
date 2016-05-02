@@ -5,7 +5,7 @@ Corral is a lightweight package that lets you quickly wrap parentheses and other
 
 ** Examples
 [[./corral-example-js.gif]] \\
-[[./corral-example-c.webm]]
+[[./corral-example-c.gif]]
 [[./corral-example-el.gif]]
 
 

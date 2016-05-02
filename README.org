@@ -4,8 +4,8 @@
 Corral is a lightweight package that lets you quickly wrap parentheses and other delimiters around text, intuitively surrounding what you want it to using just two commands.
 
 ** Examples
-[[./corral-example-js.gif]] \\
 [[./corral-example-c.gif]]
+[[./corral-example-js.gif]] 
 [[./corral-example-el.gif]]
 
 

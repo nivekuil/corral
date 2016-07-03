@@ -4,12 +4,9 @@
 Corral is a lightweight package that lets you quickly wrap parentheses and other delimiters around text, intuitively surrounding what you want it to using just two commands.
 
 ** Examples
+[[./corral-example-clojure.gif]]
+[[./corral-example-js.gif]]
 [[./corral-example-c.gif]]
-[[./corral-example-js.gif]] 
-[[./corral-example-el.gif]]
-
-
-These examples are shown with the built-in =electric-pair-mode= enabled.
 
 ** Installation
 Corral can be found on melpa, and should be installed from there.  To install it manually instead, save corral.el to your computer and add this to your init file:

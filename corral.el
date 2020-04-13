@@ -336,6 +336,19 @@ WRAP-TOGGLE inverts the behavior of opening quote insertion compared to the
                           'corral-backquote-backward
                           'corral-backquote-forward
                           wrap-toggle))
+
+(define-minor-mode corral-mode "Mode for Keybindings for `corral'. "
+  t nil
+  (list
+   (cons (kbd "M-(") 'corral-parentheses-backward)
+   (cons (kbd "M-)") 'corral-parentheses-forward)
+   (cons (kbd "M-[") 'corral-brackets-backward)
+   (cons (kbd "M-]") 'corral-brackets-forward)
+   (cons (kbd "M-{") 'corral-braces-backward)
+   (cons (kbd "M-}") 'corral-braces-forward)
+   (cons (kbd "M-\"") 'corral-double-quotes-backward)
+   (cons (kbd "C-M-\"") 'corral-double-quotes-forward)))
+
 (provide 'corral)
 
 ;;; corral.el ends here

@@ -336,6 +336,55 @@ WRAP-TOGGLE inverts the behavior of opening quote insertion compared to the
                           'corral-backquote-backward
                           'corral-backquote-forward
                           wrap-toggle))
+
+;;;###autoload
+(defun corral-underscore-backward (&optional wrap-toggle)
+  "Wrap underscores around sexp, moving point to the opening underscore.
+
+WRAP-TOGGLE inverts the behavior of closing underscore insertion
+compared to the `corral-default-no-wrap' variable."
+  (interactive "P")
+  (corral-command-backward ?\_ ?\_
+                           'corral-underscore-backward
+                           'corral-underscore-forward
+                           wrap-toggle))
+
+;;;###autoload
+(defun corral-underscore-forward (&optional wrap-toggle)
+  "Wrap underscores around sexp, moving point to the closing underscore.
+
+WRAP-TOGGLE inverts the behavior of opening underscore insertion
+compared to the `corral-default-no-wrap' variable."
+  (interactive "P")
+  (corral-command-forward ?\_ ?\_
+                          'corral-underscore-backward
+                          'corral-underscore-forward
+                          wrap-toggle))
+
+;;;###autoload
+(defun corral-star-backward (&optional wrap-toggle)
+  "Wrap stars around sexp, moving point to the opening star.
+
+WRAP-TOGGLE inverts the behavior of closing star insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
+  (corral-command-backward ?\* ?\*
+                           'corral-star-backward
+                           'corral-star-forward
+                           wrap-toggle))
+
+;;;###autoload
+(defun corral-star-forward (&optional wrap-toggle)
+  "Wrap stars around sexp, moving point to the closing star.
+
+WRAP-TOGGLE inverts the behavior of opening star insertion compared to the
+`corral-default-no-wrap' variable."
+  (interactive "P")
+  (corral-command-forward ?\* ?\*
+                          'corral-star-backward
+                          'corral-star-forward
+                          wrap-toggle))
+
 (provide 'corral)
 
 ;;; corral.el ends here
